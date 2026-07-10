@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+
+    <changeSet id="1782765197194-1" author="MGaballah">
+
+        <createTable tableName="wallets">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="pk_wallets_id"/>
+            </column>
+
+            <column name="user_id" type="UUID">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_wallets_user_id"/>
+            </column>
+
+            <column name="balance" type="DECIMAL(15,2)" defaultValueNumeric="0.00">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status" type="VARCHAR(30)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="wallets"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_wallets_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
+        <rollback>
+            <dropTable tableName="wallets"/>
+        </rollback>
+
+    </changeSet>
+</databaseChangeLog>

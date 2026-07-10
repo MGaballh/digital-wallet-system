@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+
+    <changeSet id="1782755315897-1" author="MGaballah">
+        <createTable tableName="users">
+
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="pk_users_id"/>
+            </column>
+
+            <column name="full_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="email" type="VARCHAR(150)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_users_email"/>
+            </column>
+
+            <column name="phone" type="VARCHAR(20)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_users_phone"/>
+            </column>
+
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="role" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="is_frozen" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="users"/>
+        </rollback>
+
+    </changeSet>
+
+</databaseChangeLog>
